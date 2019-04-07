@@ -1,7 +1,7 @@
-### 1001
+# 1001
 
-## Desenvolvimento de Videojogos
+## Desenvolvimento de Videojogos I
 
-# Master -- Jogo final
-# Prototipo -- primeira entrega de prototipo
+### Master -- Jogo final
+### Prototipo -- primeira entrega de prototipo
 
