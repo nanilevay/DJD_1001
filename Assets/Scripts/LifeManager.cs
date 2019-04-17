@@ -5,15 +5,14 @@ using UnityEngine;
 public class LifeManager : MonoBehaviour
 {
     [SerializeField] private GameObject lifePointPrefab;
-    private float                       shootSpeed;
+    [SerializeField] private float      shootSpeed;
     [SerializeField] private Transform  shootPoint;
-
+    private float finalSpeed;
     // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            PickRandomAngle();
             ReleaseLife();
         }
 
@@ -21,22 +20,14 @@ public class LifeManager : MonoBehaviour
 
     void ReleaseLife()
     {
-        GameObject newLifePoint = Instantiate(lifePointPrefab, shootPoint.position, shootPoint.rotation);
+        finalSpeed = Random.Range(shootSpeed - 100, shootSpeed + 1);
 
-        shootSpeed = Random.Range(700.0f, 850.0f);
+        GameObject newLifePoint = Instantiate(lifePointPrefab,
+            shootPoint.position, shootPoint.rotation);
 
         Rigidbody2D rb = newLifePoint.GetComponent<Rigidbody2D>();
-        rb.velocity = shootSpeed * newLifePoint.transform.up;
+        rb.velocity = finalSpeed * newLifePoint.transform.up +
+            finalSpeed / Random.Range(3,6) * Vector3.right * Random.Range(-1,2);
     }
 
-    void PickRandomAngle()
-    {
-        Vector3 generatedAngle = transform.rotation.eulerAngles;
-
-        generatedAngle.z += Random.Range(-25, 25);
-        if (generatedAngle.z > 180.0f) generatedAngle.z -= 360;
-
-        generatedAngle.z = Mathf.Clamp(generatedAngle.z, -10, 10);
-        transform.localRotation = Quaternion.Euler(generatedAngle);
-    }
 }

@@ -6,37 +6,32 @@ public class FloatController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float amplitude;
+//    [SerializeField] private float fallDrag;
     private Vector3                posZero;
     private Vector3                tempPos;
-    private bool                   isTemp;
+    private Vector3                v0;
 
     Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        isTemp = false;
         rb = GetComponent<Rigidbody2D>();
+        v0 = rb.velocity;
     }
 
     void FixedUpdate()
     {
-        if (rb.velocity.y <= 0.0f)
+        if (rb.velocity.y <= -(v0.y / 4))
         {
-            StartFloating();
+            rb.gravityScale = 0;
+            rb.drag = 8;
+ //           StartFloating();
         }
     }
 
     void StartFloating()
     {
-        rb.velocity = Vector3.zero;
-        if (!isTemp)
-        {
-            posZero = transform.position;
-            isTemp = true;
-        }
-        tempPos = posZero;
-        tempPos.y += amplitude * Mathf.Sin(speed * Time.time);
-        transform.position = tempPos;
+        rb.gravityScale = Mathf.Sin(speed * Time.time) / 2;
     }
 }
