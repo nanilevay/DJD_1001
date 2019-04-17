@@ -4,20 +4,39 @@ using UnityEngine;
 
 public class FloatController : MonoBehaviour
 {
-    public float speed;
-    public float amplitude;
-    private Vector3 tempPos;
-    private float y0;
+    [SerializeField] private float speed;
+    [SerializeField] private float amplitude;
+    private Vector3                posZero;
+    private Vector3                tempPos;
+    private bool                   isTemp;
+
+    Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        float y0 = transform.position.y;
+        isTemp = false;
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        tempPos.y = y0 + amplitude * Mathf.Sin(speed * Time.time);
+        if (rb.velocity.y <= 0.0f)
+        {
+            StartFloating();
+        }
+    }
+
+    void StartFloating()
+    {
+        rb.velocity = Vector3.zero;
+        if (!isTemp)
+        {
+            posZero = transform.position;
+            isTemp = true;
+        }
+        tempPos = posZero;
+        tempPos.y += amplitude * Mathf.Sin(speed * Time.time);
         transform.position = tempPos;
     }
 }
