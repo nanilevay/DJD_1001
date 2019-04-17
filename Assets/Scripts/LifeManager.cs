@@ -13,7 +13,6 @@ public class LifeManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            PickRandomAngle();
             ReleaseLife();
         }
 
@@ -21,22 +20,13 @@ public class LifeManager : MonoBehaviour
 
     void ReleaseLife()
     {
-        GameObject newLifePoint = Instantiate(lifePointPrefab, shootPoint.position, shootPoint.rotation);
+        GameObject newLifePoint = Instantiate(lifePointPrefab, 
+            shootPoint.position, Quaternion.Euler(0.0f, 90.0f, 0.0f));
 
         shootSpeed = Random.Range(700.0f, 850.0f);
 
         Rigidbody2D rb = newLifePoint.GetComponent<Rigidbody2D>();
-        rb.velocity = shootSpeed * newLifePoint.transform.up;
-    }
-
-    void PickRandomAngle()
-    {
-        Vector3 generatedAngle = transform.rotation.eulerAngles;
-
-        generatedAngle.z += Random.Range(-25, 25);
-        if (generatedAngle.z > 180.0f) generatedAngle.z -= 360;
-
-        generatedAngle.z = Mathf.Clamp(generatedAngle.z, -10, 10);
-        transform.localRotation = Quaternion.Euler(generatedAngle);
+        rb.velocity = (shootSpeed * newLifePoint.transform.up) +
+           (2.0f * shootSpeed * newLifePoint.transform.right);
     }
 }
