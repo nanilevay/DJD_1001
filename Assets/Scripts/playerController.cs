@@ -22,6 +22,14 @@ public class playerController : MonoBehaviour
         VelocityX.x = xaxis;
         rb.velocity = VelocityX;
 
+        if (rb.velocity.x < 0.0f)
+        {
+            transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+        }
+        else if (rb.velocity.x > 0.0f)
+        {
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+        }
         //lock move speed  
         if (rb.velocity.magnitude > speed)
         {
