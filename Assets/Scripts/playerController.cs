@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 4000.0f;
-    [SerializeField] private float jumpSpeed = 200.0f;
-    [SerializeField] Collider2D groundCollider;
-    [SerializeField] Collider2D airCollider;
+    [SerializeField] private float  moveSpeed = 4000.0f;
+    [SerializeField] private float  jumpSpeed = 200.0f;
+    [SerializeField] Collider2D     groundCollider;
+    [SerializeField] Collider2D     airCollider;
 
-    Animator      animator;
-    Rigidbody2D   rb;
-    private float hAxis;
-    bool          jumpPressed;
+    Animator        animator;
+    Rigidbody2D     rb;
+    private float   hAxis;
+    bool            jumpPressed;
+    bool            doubleJump;
+    bool            attackPressed;
 
     // Properties of player character
     private bool IsOnGround
@@ -42,10 +44,13 @@ public class playerController : MonoBehaviour
 
         if (jumpPressed)
         {
-            if (IsOnGround)
+            if (IsOnGround || !doubleJump)
             {
                 currentVelocity.y = jumpSpeed;
+                doubleJump = !IsOnGround;
             }
+            else if (IsOnGround)
+                doubleJump = false;
         }
 
         groundCollider.enabled = IsOnGround;
@@ -56,8 +61,9 @@ public class playerController : MonoBehaviour
 
     private void Update()
     {
-        jumpPressed = Input.GetButtonDown("Jump");
+        jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
+        attackPressed = Input.GetButtonDown("Fire1");
         Vector2 currentVelocity = rb.velocity;
 
         if ((hAxis < 0.0f) && (transform.right.x > 0.0f))
@@ -68,6 +74,9 @@ public class playerController : MonoBehaviour
         {
             transform.rotation = Quaternion.identity;
         }
+
+        if (attackPressed)
+            animator.SetTrigger("Attack");
 
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
     }
