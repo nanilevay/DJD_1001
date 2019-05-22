@@ -8,6 +8,7 @@ public class playerController : MonoBehaviour
     [SerializeField] private float  jumpSpeed = 200.0f;
     [SerializeField] Collider2D     groundCollider;
     [SerializeField] Collider2D     airCollider;
+    [SerializeField] Collider2D     weapon;
 
     Animator        animator;
     Rigidbody2D     rb;
@@ -81,9 +82,16 @@ public class playerController : MonoBehaviour
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
     }
 
+    public void ActivateHit()
+    {
+        weapon.enabled = !weapon.enabled;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 2);
     }
 }
+
+
