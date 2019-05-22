@@ -14,8 +14,9 @@ public class playerController : MonoBehaviour
     Rigidbody2D     rb;
     private float   hAxis;
     bool            jumpPressed;
-    bool            doubleJump;
     bool            attackPressed;
+    int             jumpCount;
+    private         Vector3 climbPos;
 
     // Properties of player character
     private bool IsOnGround
@@ -29,11 +30,26 @@ public class playerController : MonoBehaviour
         }
     }
 
+    
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if ((collision.collider.gameObject.layer == LayerMask.NameToLayer("Ledge")) && !(IsOnGround)) 
+        {
+                GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+                GetComponent<Rigidbody2D>().gravityScale = 0;
+                climbPos = GetComponent<Transform>().position;
+                GetComponent<Transform>().position = new Vector3(climbPos.x + 10, climbPos.y + 10, 0);
+                GetComponent<Rigidbody2D>().gravityScale = 1;
+  
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -45,15 +61,19 @@ public class playerController : MonoBehaviour
 
         if (jumpPressed)
         {
-            if (IsOnGround || !doubleJump)
+            if (IsOnGround)
             {
                 currentVelocity.y = jumpSpeed;
-                doubleJump = !IsOnGround;
+                jumpCount = 1;
             }
-            else if (IsOnGround)
-                doubleJump = false;
+            else if (currentVelocity.y <= 0 && jumpCount == 1)
+            {
+                currentVelocity.y = jumpSpeed;
+                jumpCount = 0;
+            }
         }
 
+       
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
 
