@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    [SerializeField] private float  moveSpeed = 4000.0f;
-    [SerializeField] private float  jumpSpeed = 200.0f;
-    [SerializeField] Collider2D     groundCollider;
-    [SerializeField] Collider2D     airCollider;
-    [SerializeField] Collider2D     weapon;
+    [SerializeField] private float moveSpeed = 4000.0f;
+    [SerializeField] private float jumpSpeed = 200.0f;
+    [SerializeField] Collider2D groundCollider;
+    [SerializeField] Collider2D airCollider;
+    [SerializeField] Collider2D weapon;
+    [SerializeField] private float mantleRayHeight = 10.0f;
+    [SerializeField] private float climbForce;
+    [SerializeField] Transform climbHandPos;
+    [SerializeField] Transform wallCheck;
 
     Animator        animator;
     Rigidbody2D     rb;
+    private Vector3 targetPoint;
     private float   hAxis;
-    bool            jumpPressed;
-    bool            attackPressed;
-    int             jumpCount;
-    private         Vector3 climbPos;
+    private bool    jumpPressed;
+    private bool    attackPressed;
+    private int     jumpCount;
+
 
     // Properties of player character
+        // Is the player on ground
     private bool IsOnGround
     {
         get
@@ -30,17 +36,29 @@ public class playerController : MonoBehaviour
         }
     }
 
-    
-    void OnCollisionEnter2D(Collision2D collision)
+        // Is the player on a wall
+    private bool IsOnWall
     {
-        if ((collision.collider.gameObject.layer == LayerMask.NameToLayer("Ledge")) && !(IsOnGround)) 
+        get
         {
-                GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                GetComponent<Rigidbody2D>().gravityScale = 0;
-                climbPos = GetComponent<Transform>().position;
-                GetComponent<Transform>().position = new Vector3(climbPos.x + 10, climbPos.y + 10, 0);
-                GetComponent<Rigidbody2D>().gravityScale = 1;
-  
+            Collider2D collider = Physics2D.OverlapCircle
+                (wallCheck.position, 2.0f, LayerMask.GetMask("Ground"));
+            return (collider != null);
+        }
+    }
+
+        // Is the player Capable of Mantling
+    private bool CanMantle
+    {
+        get
+        {
+            Vector3 rayPosition;
+            Vector3 rayOffset = new Vector3(0.0f, mantleRayHeight, 0.0f);
+            rayPosition = rayOffset + wallCheck.position;
+            RaycastHit2D hit = Physics2D.Raycast(rayPosition, 
+                transform.right, 3.0f, LayerMask.GetMask("Ground"));
+
+            return (!hit);
         }
     }
 
@@ -73,6 +91,18 @@ public class playerController : MonoBehaviour
             }
         }
 
+        // If the player is in contact with a wall
+        if (IsOnWall)
+        {
+            // Check for ledges
+            if (CanMantle)
+            {
+                // Climb ledge
+                MantleLedge();
+            }
+            
+            // Wall Grab
+        }
        
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
@@ -99,18 +129,36 @@ public class playerController : MonoBehaviour
         if (attackPressed)
             animator.SetTrigger("Attack");
 
+        // Animator values
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
     }
 
+    public void MantleLedge()
+    {
+
+        targetPoint = climbHandPos.position + new Vector3(5.0f * transform.right.normalized.x, 0.0f, 0.0f);
+
+        // PROBLEMA AQUI NAO SEI ONDE, A POSICAO NAO ESTA A DAR LERP CORRETAMENTE
+        // O SUPOSTO E PASSAR PELA HANDPOSITION E COLOCAR SE EM CIMA DO PROXIMO QUADRADO
+        transform.position = Vector3.Lerp(transform.position, (targetPoint - transform.rotation * climbHandPos.localPosition), Time.deltaTime * climbForce);
+        
+        // Set animation for mantle ledge
+    }
     public void ActivateHit()
     {
         weapon.enabled = !weapon.enabled;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 2);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(wallCheck.position, 2);
+        Gizmos.DrawRay(wallCheck.position + new Vector3 
+            (0.0f, mantleRayHeight, 0.0f), transform.right * 10.0f);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(climbHandPos.position, 1.0f);
     }
 }
 
