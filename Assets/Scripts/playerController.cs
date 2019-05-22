@@ -9,22 +9,19 @@ public class playerController : MonoBehaviour
     [SerializeField] Collider2D groundCollider;
     [SerializeField] Collider2D airCollider;
     [SerializeField] Collider2D weapon;
-    [SerializeField] private float mantleRayHeight = 10.0f;
-    [SerializeField] private float climbForce;
-    [SerializeField] Transform climbHandPos;
     [SerializeField] Transform wallCheck;
+    [SerializeField] Transform mantleCheckPos;
 
     Animator        animator;
     Rigidbody2D     rb;
-    private Vector3 targetPoint;
     private float   hAxis;
     private bool    jumpPressed;
     private bool    attackPressed;
     private int     jumpCount;
-
+    private RaycastHit2D mantleHit;
 
     // Properties of player character
-        // Is the player on ground
+    // Is the player on ground
     private bool IsOnGround
     {
         get
@@ -52,13 +49,13 @@ public class playerController : MonoBehaviour
     {
         get
         {
-            Vector3 rayPosition;
-            Vector3 rayOffset = new Vector3(0.0f, mantleRayHeight, 0.0f);
-            rayPosition = rayOffset + wallCheck.position;
-            RaycastHit2D hit = Physics2D.Raycast(rayPosition, 
-                transform.right, 3.0f, LayerMask.GetMask("Ground"));
+            mantleHit = Physics2D.Raycast(mantleCheckPos.position, 
+                transform.up * -1, 35, LayerMask.GetMask("Ground"));
 
-            return (!hit);
+            if (Mathf.Abs(mantleHit.point.y - mantleCheckPos.position.y) > 28)
+                return mantleHit;
+            else
+                return false;
         }
     }
 
@@ -95,15 +92,24 @@ public class playerController : MonoBehaviour
         if (IsOnWall)
         {
             // Check for ledges
-            if (CanMantle)
+            if (CanMantle && Mathf.Abs(hAxis) > 0.1)
             {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
+                rb.gravityScale = 0;
+                // Set animation
+                // Quanto tivermos animacao passa a ser evento que chama
+                // a funcao MantleLedge();
+
                 // Climb ledge
                 MantleLedge();
             }
-            
-            // Wall Grab
+            else
+            {
+                // Wall Grab
+            }
         }
-       
+
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
 
@@ -135,14 +141,8 @@ public class playerController : MonoBehaviour
 
     public void MantleLedge()
     {
-
-        targetPoint = climbHandPos.position + new Vector3(5.0f * transform.right.normalized.x, 0.0f, 0.0f);
-
-        // PROBLEMA AQUI NAO SEI ONDE, A POSICAO NAO ESTA A DAR LERP CORRETAMENTE
-        // O SUPOSTO E PASSAR PELA HANDPOSITION E COLOCAR SE EM CIMA DO PROXIMO QUADRADO
-        transform.position = Vector3.Lerp(transform.position, (targetPoint - transform.rotation * climbHandPos.localPosition), Time.deltaTime * climbForce);
-        
-        // Set animation for mantle ledge
+        transform.position = mantleHit.point;
+        rb.gravityScale = 1;
     }
     public void ActivateHit()
     {
@@ -151,14 +151,14 @@ public class playerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //  gizmos help
+        Ray ray = new Ray(mantleCheckPos.position,
+                    transform.up * -1);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 2);
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(wallCheck.position, 2);
-        Gizmos.DrawRay(wallCheck.position + new Vector3 
-            (0.0f, mantleRayHeight, 0.0f), transform.right * 10.0f);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(climbHandPos.position, 1.0f);
+        Gizmos.DrawRay(ray.origin, ray.direction * 35);
     }
 }
 
