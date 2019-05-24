@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class playerController : Agent
 {
-    [SerializeField] private float moveSpeed = 4000.0f;
+    [Header("Player")]
+    [SerializeField] private float knockBackDuration;
     [SerializeField] private float jumpSpeed = 200.0f;
-    [SerializeField] Collider2D groundCollider;
-    [SerializeField] Collider2D airCollider;
-    [SerializeField] Collider2D weapon;
-    [SerializeField] Transform wallCheck;
-    [SerializeField] Transform mantleCheckPos;
+    [SerializeField] Collider2D    groundCollider;
+    [SerializeField] Collider2D    airCollider;
+    [SerializeField] Collider2D    weapon;
+    [SerializeField] Transform     wallCheck;
+    [SerializeField] Transform     mantleCheckPos;
 
-    Animator        animator;
-    Rigidbody2D     rb;
-    private float   hAxis;
-    private bool    jumpPressed;
-    private bool    attackPressed;
-    private int     jumpCount;
+    Animator             animator;
+    private float        hAxis;
+    private bool         jumpPressed;
+    private bool         attackPressed;
+    private int          jumpCount;
+    private float        knockBackTimer;
     private RaycastHit2D mantleHit;
+
+    [Header("Life Points")]
+    // Variables having to do with HP instantiate
+    [SerializeField] private GameObject lifePointPrefab;
+    [SerializeField] private float      lifePointShootSpeed;
+    [SerializeField] private Transform  lifePointShootPoint;
 
     // Properties of player character
     // Is the player on ground
@@ -60,63 +67,71 @@ public class playerController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();
         animator = GetComponent<Animator>();
-        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector2 currentVelocity = rb.velocity;
-
-        currentVelocity.x = moveSpeed * hAxis * Time.fixedDeltaTime;
-
-        if (jumpPressed)
+        if (knockBackTimer <= 0.0f)
         {
-            if (IsOnGround)
+            rb.gravityScale = 1;
+            Vector2 currentVelocity = rb.velocity;
+
+            currentVelocity.x = moveSpeed * hAxis * Time.fixedDeltaTime;
+
+            if (jumpPressed)
             {
-                currentVelocity.y = jumpSpeed;
-                jumpCount = 1;
+                if (IsOnGround)
+                {
+                    currentVelocity.y = jumpSpeed;
+                    jumpCount = 1;
+                }
+                else if (currentVelocity.y <= 0 && jumpCount >= 1)
+                {
+                    currentVelocity.y = jumpSpeed;
+                    jumpCount = 0;
+                }
             }
-            else if (currentVelocity.y <= 0 && jumpCount == 1)
+
+            // If the player is in contact with a wall
+            if (IsOnWall)
             {
-                currentVelocity.y = jumpSpeed;
-                jumpCount = 0;
+                // Check for ledges
+                if (CanMantle && Mathf.Abs(hAxis) > 0.1)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = 0;
+                    rb.gravityScale = 0;
+                    // Set animation
+                    // Quanto tivermos animacao passa a ser evento que chama
+                    // a funcao MantleLedge();
+
+                    // Climb ledge
+                    MantleLedge();
+                }
+                else
+                {
+                    // Wall Grab
+                }
             }
+
+            rb.velocity = currentVelocity;
+        }
+        else
+        {
+            rb.gravityScale = 2.0f;
         }
 
-        // If the player is in contact with a wall
-        if (IsOnWall)
-        {
-            // Check for ledges
-            if (CanMantle && Mathf.Abs(hAxis) > 0.1)
-            {
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = 0;
-                rb.gravityScale = 0;
-                // Set animation
-                // Quanto tivermos animacao passa a ser evento que chama
-                // a funcao MantleLedge();
-
-                // Climb ledge
-                MantleLedge();
-            }
-            else
-            {
-                // Wall Grab
-            }
-        }
-
+        // Colisions
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
-
-        rb.velocity = currentVelocity;
     }
 
-    private void Update()
+    protected override void Update()
     {
         jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
@@ -137,6 +152,34 @@ public class playerController : MonoBehaviour
 
         // Animator values
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
+
+        base.Update();
+
+        if (knockBackTimer > 0.0f)
+        {
+            knockBackTimer -= Time.deltaTime;
+        }
+    }
+
+    protected override void OnHit(Vector2 hitDirection)
+    {
+        ReleaseLife();
+        knockBackTimer = knockBackDuration;
+        rb.velocity = hitDirection * jumpSpeed;
+    }
+
+    void ReleaseLife()
+    {
+        float finalSpeed;
+        finalSpeed = Random.Range
+            (lifePointShootSpeed - 100, lifePointShootSpeed + 1);
+
+        GameObject newLifePoint = Instantiate(lifePointPrefab,
+            lifePointShootPoint.position, lifePointShootPoint.rotation);
+
+        Rigidbody2D rb = newLifePoint.GetComponent<Rigidbody2D>();
+        rb.velocity = finalSpeed * newLifePoint.transform.up +
+            finalSpeed / Random.Range(3, 6) * Vector3.right * Random.Range(-1, 2);
     }
 
     public void MantleLedge()

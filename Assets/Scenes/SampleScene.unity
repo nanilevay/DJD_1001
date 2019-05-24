@@ -5713,12 +5713,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5500
+  maxHP: 3
+  invulnDuration: 0.25
+  knockBackDuration: 0
   jumpSpeed: 250
   groundCollider: {fileID: 1946913900}
   airCollider: {fileID: 1946913906}
   weapon: {fileID: 25806072}
   wallCheck: {fileID: 2145678434}
   mantleCheckPos: {fileID: 1934473489}
+  lifePointPrefab: {fileID: 0}
+  lifePointShootSpeed: 0
+  lifePointShootPoint: {fileID: 0}
 --- !u!61 &1946913906
 BoxCollider2D:
   m_ObjectHideFlags: 0

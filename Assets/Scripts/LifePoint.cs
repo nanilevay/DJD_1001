@@ -46,11 +46,6 @@ public class LifePoint : MonoBehaviour
         }
     }
 
-    public override string ToString()
-    {
-        return "Picked Up";
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
