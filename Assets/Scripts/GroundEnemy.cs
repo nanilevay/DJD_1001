@@ -17,6 +17,13 @@ public class GroundEnemy : Agent
 
     private float     moveDirect = 1.0f;
     private Transform target;
+    private Animator animator;
+
+    protected override void Start()
+    {
+        base.Start();
+        animator.SetTrigger("Spawn");
+    }
 
     private void FixedUpdate()
     {
