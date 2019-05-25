@@ -4711,6 +4711,7 @@ GameObject:
   - component: {fileID: 2726175632996586590}
   - component: {fileID: 8499870081688398285}
   - component: {fileID: 203339883427319213}
+  - component: {fileID: 4820657525032882420}
   m_Layer: 8
   m_Name: LifePoint
   m_TagString: Untagged
@@ -4793,7 +4794,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff917ae139049a4883fd8270c43770f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShouldFloat: 1
+  valueToAdd: 1
+  pickupFx: {fileID: 0}
+  shouldFloat: 1
+  pickUpTrigger: {fileID: 203339883427319213}
 --- !u!50 &8499870081688398285
 Rigidbody2D:
   serializedVersion: 4
@@ -4825,9 +4829,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4.44
+--- !u!58 &4820657525032882420
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8499870081688398284}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5.39
+  m_Radius: 3.25

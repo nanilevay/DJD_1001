@@ -2,53 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LifePoint : MonoBehaviour
+public class LifePoint : PickUp
 {
-    [SerializeField] private bool ShouldFloat = true;
-    private bool isFloating = false;
-    private Vector3 v0;
-    Rigidbody2D rb;
+    [SerializeField] private bool       shouldFloat;
+    [SerializeField] private Collider2D pickUpTrigger;
 
-    private bool HealthPickUp
-    {
-        get
-        {
-            Collider2D collider = Physics2D.OverlapCircle
-                (transform.position, 3.0f, LayerMask.GetMask("Player"));
-
-            return (collider != null);
-        }
-    }
+    private Vector3     v0;
+    private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        pickUpTrigger.enabled = false;
         v0 = rb.velocity;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (ShouldFloat)
+        if (shouldFloat)
         {
             if (rb.velocity.y <= -(v0.y / 4))
             {
                 rb.gravityScale = 0;
                 rb.drag = 8;
-                isFloating = true;
+                pickUpTrigger.enabled = true;
             }
-        }
-
-        if (HealthPickUp && isFloating)
-        {
-            // Get-s picked up by the player
-            Destroy(gameObject);
         }
     }
 
-    private void OnDrawGizmosSelected()
+    protected override void SendPickUp(Agent agent)
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, 3.0f);
+        agent.RecoverHP(valueToAdd);
     }
 }

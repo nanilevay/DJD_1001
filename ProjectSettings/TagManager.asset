@@ -13,11 +13,11 @@ TagManager:
   - UI
   - 
   - 
-  - LifePoints
+  - PickUps
   - PhysicalMap
-  - Player
+  - Agent
   - Ground
-  - Ledge
+  - Traps
   - Background1
   - Background2
   - Background3
