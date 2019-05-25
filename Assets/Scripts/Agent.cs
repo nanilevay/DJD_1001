@@ -9,6 +9,8 @@ public class Agent : MonoBehaviour
     [SerializeField] protected int maxHP;
     [SerializeField] protected float invulnDuration;
 
+    
+
     protected Rigidbody2D rb;
     protected SpriteRenderer sprite;
     protected int currentHP;
@@ -55,6 +57,8 @@ public class Agent : MonoBehaviour
                 sprite.enabled = true;
             }
         }
+
+        
     }
 
     protected virtual void TakeHit(int nDamage, Vector2 hitDirection)
