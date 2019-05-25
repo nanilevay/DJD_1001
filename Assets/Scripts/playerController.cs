@@ -161,10 +161,10 @@ public class playerController : Agent
 
     protected override void OnHit(int nDamage, Vector2 hitDirection)
     {
-        for(int i = 0; i < nDamage; i++)
+        for (int i = 0; i < nDamage; i++)
             ReleaseLife();
         knockBackTimer = knockBackDuration;
-        rb.velocity = hitDirection * jumpSpeed;
+        rb.velocity = hitDirection * jumpSpeed * 0.75f;
     }
 
     void ReleaseLife()
