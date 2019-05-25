@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
+    public enum Faction { Player, Enemy};
+
     [Header("Agent")]
+
     [SerializeField] protected float moveSpeed = 4000.0f;
-    [SerializeField] protected int maxHP;
+    [SerializeField] protected int   maxHP;
     [SerializeField] protected float invulnDuration;
+    public Faction faction;
 
     
 
-    protected Rigidbody2D rb;
+    protected Rigidbody2D    rb;
     protected SpriteRenderer sprite;
-    protected int currentHP;
-    protected float invulnTimer;
+    protected int            currentHP;
+    protected float          invulnTimer;
 
     protected bool IsInvulnerable
     {
@@ -61,7 +65,7 @@ public class Agent : MonoBehaviour
         
     }
 
-    protected virtual void TakeHit(int nDamage, Vector2 hitDirection)
+    public virtual void TakeHit(int nDamage, Vector2 hitDirection)
     {
         if (IsInvulnerable) return;
 
@@ -74,13 +78,18 @@ public class Agent : MonoBehaviour
         else
         {
             IsInvulnerable = true;
-            OnHit(hitDirection);
+            OnHit(nDamage,hitDirection);
         }
     }
 
-    protected virtual void OnHit(Vector2 hitDirection)
+    protected virtual void OnHit(int nDamage, Vector2 hitDirection)
     {
 
+    }
+
+    public virtual void RecoverHP(int amountRecovered)
+    {
+        currentHP += amountRecovered;
     }
 
     protected virtual void OnDie()

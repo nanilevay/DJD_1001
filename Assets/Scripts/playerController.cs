@@ -165,18 +165,19 @@ public class playerController : Agent
         emission.enabled = IsOnGround;
     }
 
-    protected override void OnHit(Vector2 hitDirection)
+    protected override void OnHit(int nDamage, Vector2 hitDirection)
     {
-        ReleaseLife();
+        for (int i = 0; i < nDamage; i++)
+            ReleaseLife();
         knockBackTimer = knockBackDuration;
-        rb.velocity = hitDirection * jumpSpeed;
+        rb.velocity = hitDirection * jumpSpeed * 0.75f;
     }
 
     void ReleaseLife()
     {
         float finalSpeed;
         finalSpeed = Random.Range
-            (lifePointShootSpeed - 100, lifePointShootSpeed + 1);
+            (lifePointShootSpeed - 100, lifePointShootSpeed);
 
         GameObject newLifePoint = Instantiate(lifePointPrefab,
             lifePointShootPoint.position, lifePointShootPoint.rotation);
