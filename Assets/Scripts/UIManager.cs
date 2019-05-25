@@ -10,8 +10,6 @@ public class UIManager : MonoBehaviour
     // checking if player presses "p" key
     private bool pausePressed;
 
-    public AudioClip startMenuAudio;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -80,10 +78,7 @@ public class UIManager : MonoBehaviour
     public void LoadScene(string scene)
     {
         SceneManager.LoadScene(scene);
-/*
-        if (scene == "StartMenu")
-            startMenuAudio.Play();
-            */
+
     }
 
     // quits game if player clicks "Quit" option in menus
