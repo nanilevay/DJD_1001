@@ -13,9 +13,13 @@ public class Agent : MonoBehaviour
     [SerializeField] protected float invulnDuration;
     public Faction faction;
 
+<<<<<<< HEAD
     
 
+    protected Rigidbody2D rb;
+=======
     protected Rigidbody2D    rb;
+>>>>>>> 9f4ee217f11fb7b6f18de6731d50361befa60506
     protected SpriteRenderer sprite;
     protected int            currentHP;
     protected float          invulnTimer;

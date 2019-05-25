@@ -77,7 +77,8 @@ public class UIManager : MonoBehaviour
     // to load any of the scenes needed
     public void LoadScene(string scene)
     {
-        SceneManager.LoadScene(scene);  
+        SceneManager.LoadScene(scene);
+
     }
 
     // quits game if player clicks "Quit" option in menus

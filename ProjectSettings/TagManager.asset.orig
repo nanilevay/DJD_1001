@@ -17,8 +17,12 @@ TagManager:
   - PhysicalMap
   - Agent
   - Ground
-  - Traps
+<<<<<<< HEAD
+  - Ledge
   - Rain
+=======
+  - Traps
+>>>>>>> 9f4ee217f11fb7b6f18de6731d50361befa60506
   - Background1
   - Background2
   - Background3

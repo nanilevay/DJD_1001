@@ -21,6 +21,8 @@ public class playerController : Agent
     private float        knockBackTimer;
     private RaycastHit2D mantleHit;
 
+    public ParticleSystem walkingDust;
+
     [Header("Life Points")]
     // Variables having to do with HP instantiate
     [SerializeField] private GameObject lifePointPrefab;
@@ -157,6 +159,10 @@ public class playerController : Agent
         {
             knockBackTimer -= Time.deltaTime;
         }
+
+        var emission = walkingDust.emission;
+
+        emission.enabled = IsOnGround;
     }
 
     protected override void OnHit(int nDamage, Vector2 hitDirection)
