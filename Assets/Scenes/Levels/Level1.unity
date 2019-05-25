@@ -5821,7 +5821,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -15680,7 +15680,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff917ae139049a4883fd8270c43770f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShouldFloat: 1
+  valueToAdd: 0
+  pickupFx: {fileID: 0}
+  shouldFloat: 0
+  pickUpTrigger: {fileID: 0}
 --- !u!1 &1555236932
 GameObject:
   m_ObjectHideFlags: 0
@@ -21103,6 +21106,7 @@ MonoBehaviour:
   moveSpeed: 5500
   maxHP: 3
   invulnDuration: 0.25
+  faction: 0
   knockBackDuration: 0
   jumpSpeed: 250
   groundCollider: {fileID: 1946913900}
