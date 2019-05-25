@@ -237,7 +237,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444492254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.1, y: 15.7, z: 0}
+  m_LocalPosition: {x: 60, y: 15.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1946913903}
@@ -788,9 +788,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1552683587}
-  - component: {fileID: 1552683588}
   m_Layer: 10
-  m_Name: LifeManager
+  m_Name: LifePointShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -810,22 +809,6 @@ Transform:
   m_Father: {fileID: 1946913903}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1552683588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552683586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457e0401c8d4f6f4e8f5cbf080e8bf38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifePointPrefab: {fileID: 8499870081688398284, guid: d1a19e3eeea10324c89ba2a02840c175,
-    type: 3}
-  shootSpeed: 350
-  shootPoint: {fileID: 1552683587}
 --- !u!1 &1883892347
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,7 +5531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934473488}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 50.9, z: 0}
+  m_LocalPosition: {x: 11.7, y: 45.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1946913903}
@@ -5589,8 +5572,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.62, y: 15.6}
-  m_Size: {x: 13, y: 27.9}
+  m_Offset: {x: 0, y: 10.5}
+  m_Size: {x: 13, y: 21}
   m_Direction: 0
 --- !u!50 &1946913901
 Rigidbody2D:
@@ -5650,12 +5633,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 635e263fa39871745bd59ff1931292bb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 008211627986cbb4d8f319f6b7fbac1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 38.4, y: 38.4}
+  m_Size: {x: 30.666666, y: 30.666666}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5669,7 +5652,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946913899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -54.7, y: -10.8, z: 0}
+  m_LocalPosition: {x: -54.7, y: -9.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1552683587}
@@ -5715,16 +5698,17 @@ MonoBehaviour:
   moveSpeed: 5500
   maxHP: 3
   invulnDuration: 0.25
-  knockBackDuration: 0
+  knockBackDuration: 0.25
   jumpSpeed: 250
   groundCollider: {fileID: 1946913900}
   airCollider: {fileID: 1946913906}
   weapon: {fileID: 25806072}
   wallCheck: {fileID: 2145678434}
   mantleCheckPos: {fileID: 1934473489}
-  lifePointPrefab: {fileID: 0}
-  lifePointShootSpeed: 0
-  lifePointShootPoint: {fileID: 0}
+  lifePointPrefab: {fileID: 8499870081688398284, guid: d1a19e3eeea10324c89ba2a02840c175,
+    type: 3}
+  lifePointShootSpeed: 250
+  lifePointShootPoint: {fileID: 1552683587}
 --- !u!61 &1946913906
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5738,18 +5722,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.6, y: 15.3}
+  m_Offset: {x: 0, y: 10.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 38.4, y: 38.4}
-    newSize: {x: 38.4, y: 38.4}
+    oldSize: {x: 23, y: 23}
+    newSize: {x: 30.666666, y: 30.666666}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 13, y: 27}
+  m_Size: {x: 13, y: 21}
   m_EdgeRadius: 0
 --- !u!1 &1948018219
 GameObject:
@@ -7223,8 +7207,8 @@ Tilemap:
       m_ColliderType: 1
   - first: {x: 1, y: 0, z: 0}
     second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileIndex: 11
+      m_TileSpriteIndex: 11
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -7601,7 +7585,7 @@ Tilemap:
       m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: 11400000, guid: f9653983f1a01c048b547052352d1644, type: 2}
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: e5fff2d237875894ea274dd88ee690ac, type: 2}
@@ -7623,8 +7607,10 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 600f195f7b94c38409d2ead3f38c3560, type: 2}
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: fb1a0e1fcbfd6e342b55be90c698a4cf, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: d5be4ba160708924b96ed08e8057105a, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: 21300142, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: 21300116, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
@@ -7646,6 +7632,8 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: 21300146, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300144, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 183
     m_Data:
@@ -7934,7 +7922,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145678433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 9.7, z: 0}
+  m_LocalPosition: {x: 9.5, y: 9.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1946913903}

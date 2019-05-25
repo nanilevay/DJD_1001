@@ -59,7 +59,7 @@ public class playerController : Agent
             mantleHit = Physics2D.Raycast(mantleCheckPos.position, 
                 transform.up * -1, 35, LayerMask.GetMask("Ground"));
 
-            if (Mathf.Abs(mantleHit.point.y - mantleCheckPos.position.y) > 28)
+            if (Mathf.Abs(mantleHit.point.y - mantleCheckPos.position.y) > 21)
                 return mantleHit;
             else
                 return false;
@@ -106,12 +106,7 @@ public class playerController : Agent
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
                     rb.gravityScale = 0;
-                    // Set animation
-                    // Quanto tivermos animacao passa a ser evento que chama
-                    // a funcao MantleLedge();
-
-                    // Climb ledge
-                    MantleLedge();
+                    animator.SetBool("CanClimb", CanMantle);
                 }
                 else
                 {
@@ -152,6 +147,9 @@ public class playerController : Agent
 
         // Animator values
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("VelocityY", rb.velocity.y);
+        animator.SetBool("IsOnGround", IsOnGround);
+        
 
         base.Update();
 
@@ -186,6 +184,7 @@ public class playerController : Agent
     {
         transform.position = mantleHit.point;
         rb.gravityScale = 1;
+        animator.SetBool("CanClimb", false);
     }
     public void ActivateHit()
     {
@@ -204,5 +203,3 @@ public class playerController : Agent
         Gizmos.DrawRay(ray.origin, ray.direction * 35);
     }
 }
-
-
