@@ -108,7 +108,7 @@ public class playerController : Agent
                 {
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
-                    rb.gravityScale = 0; 
+                    rb.gravityScale = 0;
                     animator.SetBool("CanClimb", CanMantle);
                 }
                 else
@@ -131,6 +131,8 @@ public class playerController : Agent
 
     protected override void Update()
     {
+        if (currentHP <= 0) return;
+
         jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
         attackPressed = Input.GetButtonDown("Fire1");
@@ -216,10 +218,11 @@ public class playerController : Agent
 
     public void MantleLedge()
     {
-        
+       
         transform.position = mantleHit.point;
         rb.gravityScale = 1;
         animator.SetBool("CanClimb", false);
+        
     }
     public void ActivateHit()
     {
@@ -237,4 +240,11 @@ public class playerController : Agent
         Gizmos.DrawSphere(wallCheck.position, 2);
         Gizmos.DrawRay(ray.origin, ray.direction * 35);
     }
+
+    protected override void OnDie()
+    {
+        LvlManager.instance.LoseLife();
+    }
+
+  
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform  target;
-    [SerializeField] private Vector3    offset;
-    [SerializeField] private bool       enforceBounds;
-    [SerializeField] private Rect       bounds;
-    [SerializeField] private float      cameraSpeed = 0.1f;
+    [SerializeField] public Transform  target;
+    [SerializeField] public Vector3    offset;
+    [SerializeField] public bool       enforceBounds;
+    [SerializeField] public Rect       bounds;
+    [SerializeField] public float      cameraSpeed = 0.1f;
 
     Camera camera;
     // Start is called before the first frame update

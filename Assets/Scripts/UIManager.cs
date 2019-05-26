@@ -1,18 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     GameObject[] pause;
 
+    public static UIManager instance;
+
+    [SerializeField] Image[] livesImg;
+
     // checking if player presses "p" key
     private bool pausePressed;
 
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        //UpdateLivesDisplay();
 
         Time.timeScale = 1;
 
@@ -21,6 +37,19 @@ public class UIManager : MonoBehaviour
     
         HidePaused();
     }
+
+    /*
+    public void UpdateLivesDisplay()
+    {
+        for(int i = 0; i < livesImg.Length; i++)
+        {
+            if (i < GmManager.instance.GetCurrentLives())
+                livesImg[i].enabled = true;
+            else
+                livesImg[i].enabled = false;
+        }
+    }
+    */
 
     private void FixedUpdate()
     {
