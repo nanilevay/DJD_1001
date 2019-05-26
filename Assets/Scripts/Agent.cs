@@ -94,6 +94,5 @@ public class Agent : MonoBehaviour
     protected virtual void OnDie()
     {
         Destroy(gameObject);
-        SceneManager.LoadScene("GameOver");
     }
 }
