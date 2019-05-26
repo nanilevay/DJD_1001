@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LvlManager : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
-    [SerializeField] Transform spawnPoint;
+    [SerializeField] GameObject       playerPrefab;
+    [SerializeField] Transform        spawnPoint;
     [SerializeField] CameraController cameraCtrl;
 
     GameObject playerChar;
@@ -16,9 +16,9 @@ public class LvlManager : MonoBehaviour
     private void Awake()
     {
         if(instance != null)
-        { Destroy(gameObject);
+        {
+            Destroy(gameObject);
             return;
-
         }
         instance = this;
     }
@@ -28,13 +28,6 @@ public class LvlManager : MonoBehaviour
         Respawn();
        // UIManager.instance.UpdateLivesDisplay();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void Respawn()
     {
         if(playerChar != null)
@@ -52,12 +45,10 @@ public class LvlManager : MonoBehaviour
         GmManager.instance.LoseLife();
       //  UIManager.instance.UpdateLivesDisplay();
 
-        if(GmManager.instance.GetCurrentLives() <= 0)
+        if(GmManager.instance.GetCurrentLives() < 0)
         {
             UIManager.instance.LoadScene("GameOver");
-         
         }
-
         else
         {
             Respawn();

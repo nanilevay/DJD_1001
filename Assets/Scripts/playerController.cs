@@ -21,7 +21,7 @@ public class playerController : Agent
     private int          jumpCount;
     private float        knockBackTimer;
     private float        attackTimer;
-    private float attackDuration = 0.25f;
+    private float        attackDuration = 0.25f;
     private RaycastHit2D mantleHit;
 
     [Header("Life Points")]
@@ -131,12 +131,11 @@ public class playerController : Agent
 
     protected override void Update()
     {
-        if (currentHP <= 0) return;
+        if (currentHP < 0) return;
 
         jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
         attackPressed = Input.GetButtonDown("Fire1");
-        Vector2 currentVelocity = rb.velocity;
 
         if ((hAxis < 0.0f) && (transform.right.x > 0.0f))
         {

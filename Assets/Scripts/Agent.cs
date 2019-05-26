@@ -88,7 +88,8 @@ public class Agent : MonoBehaviour
 
     public virtual void RecoverHP(int amountRecovered)
     {
-        currentHP += amountRecovered;
+        if (currentHP < maxHP) currentHP += amountRecovered;
+        if (currentHP > maxHP) currentHP = maxHP;
     }
 
     protected virtual void OnDie()
