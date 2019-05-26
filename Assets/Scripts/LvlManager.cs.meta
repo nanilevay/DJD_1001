@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f020c63a61372d648bf9c8c0dc1bc1e7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerPrefab: {fileID: 3584186075716110244, guid: f5497103793ff584c8edc3414cb1b00c,
+      type: 3}
+  - spawnPoint: {instanceID: 0}
+  - cameraCtrl: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
