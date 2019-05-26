@@ -151,7 +151,10 @@ public class playerController : Agent
             attackTimer = attackDuration;
         }
         else
+        {
             attackTimer -= Time.deltaTime;
+            weapon.enabled = false;
+        }
 
         // Animator values
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
@@ -219,7 +222,7 @@ public class playerController : Agent
     }
     public void ActivateHit()
     {
-        weapon.enabled = !weapon.enabled;
+        weapon.enabled = true;
     }
 
     private void OnDrawGizmos()

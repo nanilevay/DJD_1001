@@ -4798,6 +4798,7 @@ MonoBehaviour:
   pickupFx: {fileID: 0}
   shouldFloat: 1
   pickUpTrigger: {fileID: 203339883427319213}
+  timeAlive: 5
 --- !u!50 &8499870081688398285
 Rigidbody2D:
   serializedVersion: 4

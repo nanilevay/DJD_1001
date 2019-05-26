@@ -8,12 +8,22 @@ public class MeleeHit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Agent agent = other.GetComponent<Agent>();
+        Spawner spawner = other.GetComponent<Spawner>();
 
-        if (agent.faction == Agent.Faction.Enemy)
+        if (agent)
         {
-            Vector3 hitDir = 
-                (agent.transform.position - transform.position).normalized;
-            agent.TakeHit(hitDamage, hitDir);
+            if (agent.faction == Agent.Faction.Enemy)
+            {
+                Vector3 hitDir =
+                    (agent.transform.position - transform.position).normalized;
+                agent.TakeHit(hitDamage, hitDir);
+            }
+        }
+
+        if (spawner)
+        {
+            // Spawn number of enemies
+            spawner.Spawn();
         }
     }
 }

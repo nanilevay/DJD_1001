@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private float      minDistanceToSpawn;
-    [SerializeField] private float      maxDistanceToSpawn;
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform  cameraPosition;
+    [Header("Spawner")]
+    [SerializeField] protected float      minDistanceToSpawn;
+    [SerializeField] protected float      maxDistanceToSpawn;
+    [SerializeField] private GameObject   enemyPrefab;
 
-    public void Spawn()
+    public virtual void Spawn()
     {
         Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity);
     }
@@ -19,17 +19,26 @@ public class Spawner : MonoBehaviour
         RaycastHit2D spawnPosition;
         Vector3 rayOrigin;
         rayOrigin = transform.position + new Vector3
-            (Random.Range(0, maxDistanceToSpawn), 0.0f, 0.0f);
+            (Random.Range(-maxDistanceToSpawn, maxDistanceToSpawn), 0.0f, 0.0f);
+        rayOrigin.y = 1000.0f;
 
         spawnPosition = Physics2D.Raycast(rayOrigin, transform.up * -1.0f, Mathf.Infinity,
             LayerMask.GetMask("Ground"));
 
-        if (Mathf.Abs(cameraPosition.position.x - spawnPosition.point.x)
+        if (Mathf.Abs(transform.position.x - spawnPosition.point.x)
             > minDistanceToSpawn)
         {
             return spawnPosition.point;
         }
 
         return GetSpawnPosition();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, minDistanceToSpawn);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, maxDistanceToSpawn);
     }
 }
