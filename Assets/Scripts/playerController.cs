@@ -12,16 +12,17 @@ public class playerController : Agent
     [SerializeField] Collider2D    weapon;
     [SerializeField] Transform     wallCheck;
     [SerializeField] Transform     mantleCheckPos;
+    public ParticleSystem          walkingDust;
 
-    Animator             animator;
+    Animator animator;
     private float        hAxis;
     private bool         jumpPressed;
     private bool         attackPressed;
     private int          jumpCount;
     private float        knockBackTimer;
+    private float        attackTimer;
+    private float attackDuration = 0.25f;
     private RaycastHit2D mantleHit;
-
-    public ParticleSystem walkingDust;
 
     [Header("Life Points")]
     // Variables having to do with HP instantiate
@@ -144,8 +145,13 @@ public class playerController : Agent
             transform.rotation = Quaternion.identity;
         }
 
-        if (attackPressed)
+        if (attackPressed && attackTimer <= 0.0f)
+        {
             animator.SetTrigger("Attack");
+            attackTimer = attackDuration;
+        }
+        else
+            attackTimer -= Time.deltaTime;
 
         // Animator values
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
@@ -165,10 +171,28 @@ public class playerController : Agent
         emission.enabled = IsOnGround;
     }
 
-    protected override void OnHit(int nDamage, Vector2 hitDirection)
+    public override void TakeHit(int nDamage, Vector2 hitDirection)
     {
-        for (int i = 0; i < nDamage; i++)
-            ReleaseLife();
+        if (IsInvulnerable) return;
+
+        currentHP -= nDamage;
+
+        if (currentHP < 0)
+        {
+            OnDie();
+        }
+        else
+        {
+            IsInvulnerable = true;
+
+            for (int i = 0; i < nDamage; i++)
+                ReleaseLife();
+            OnHit(hitDirection);
+        }
+    }
+
+    protected override void OnHit(Vector2 hitDirection)
+    {
         knockBackTimer = knockBackDuration;
         rb.velocity = hitDirection * jumpSpeed * 0.75f;
     }

@@ -60,9 +60,7 @@ public class Agent : MonoBehaviour
             {
                 sprite.enabled = true;
             }
-        }
-
-        
+        }        
     }
 
     public virtual void TakeHit(int nDamage, Vector2 hitDirection)
@@ -78,11 +76,11 @@ public class Agent : MonoBehaviour
         else
         {
             IsInvulnerable = true;
-            OnHit(nDamage,hitDirection);
+            OnHit(hitDirection);
         }
     }
 
-    protected virtual void OnHit(int nDamage, Vector2 hitDirection)
+    protected virtual void OnHit(Vector2 hitDirection)
     {
 
     }

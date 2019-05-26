@@ -153,6 +153,7 @@ MonoBehaviour:
   backChaseRange: 15
   speedBoost: 15
   unitDamage: 1
+  stunDuration: 0.5
 --- !u!212 &5358410260090566126
 SpriteRenderer:
   m_ObjectHideFlags: 0

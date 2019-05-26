@@ -14,13 +14,34 @@ public class GroundEnemy : Agent
     [SerializeField] private float backChaseRange;
     [SerializeField] private float speedBoost;
     [SerializeField] private int   unitDamage;
+    [SerializeField] private float stunDuration;
 
+    private float     stunTimer;
     private float     moveDirect = 1.0f;
     private Transform target;
-    private Animator animator;
+    private Animator  animator;
+
+    private bool IsStunned
+    {
+        get
+        {
+            if (stunTimer > 0.0f) return true;
+            return false;
+        }
+        set
+        {
+            if (value)
+            {
+                stunTimer = stunDuration;
+            }
+            else
+                stunTimer = 0.0f;
+        }
+    }
 
     protected override void Start()
     {
+        animator = GetComponent<Animator>();
         base.Start();
         animator.SetTrigger("Spawn");
     }
@@ -65,6 +86,18 @@ public class GroundEnemy : Agent
     protected override void Update()
     {
         Vector2 currentVelocity = rb.velocity;
+
+        if (stunTimer > 0.0f)
+        {
+            stunTimer -= Time.deltaTime;
+
+            sprite.color = Color.blue;
+
+            if (stunTimer <= 0.0f)
+            {
+                sprite.color = Color.white;
+            }
+        }
 
         if (target)
         {
@@ -123,9 +156,15 @@ public class GroundEnemy : Agent
             }
         }
 
-        rb.velocity = currentVelocity;
+        if (!IsStunned)
+            rb.velocity = currentVelocity;
 
         base.Update();
+    }
+
+    protected override void OnHit(Vector2 hitDirection)
+    {
+        IsStunned = true;
     }
 
     private void OnDrawGizmosSelected()
