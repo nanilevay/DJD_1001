@@ -108,7 +108,7 @@ public class playerController : Agent
                 {
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
-                    rb.gravityScale = 0;
+                    rb.gravityScale = 0; 
                     animator.SetBool("CanClimb", CanMantle);
                 }
                 else
@@ -216,6 +216,7 @@ public class playerController : Agent
 
     public void MantleLedge()
     {
+        
         transform.position = mantleHit.point;
         rb.gravityScale = 1;
         animator.SetBool("CanClimb", false);

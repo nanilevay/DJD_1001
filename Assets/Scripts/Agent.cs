@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Agent : MonoBehaviour
 {
@@ -93,5 +94,6 @@ public class Agent : MonoBehaviour
     protected virtual void OnDie()
     {
         Destroy(gameObject);
+        SceneManager.LoadScene("GameOver");
     }
 }
