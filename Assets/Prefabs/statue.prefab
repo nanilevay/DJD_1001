@@ -94,13 +94,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fbd5803522e9e4a8e630491fea406c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistanceToSpawn: 40
-  maxDistanceToSpawn: 250
+  minDistanceToSpawn: 65
+  maxDistanceToSpawn: 350
   enemyPrefab: {fileID: 5358410260090566125, guid: 744ed8ac38c0e5c4ea6fb0b97b9af74d,
     type: 3}
   soundWaveFx: {fileID: 1084370839311085512, guid: 69252b4d384a111468edcfd9826da812,
     type: 3}
-  amountToSpawn: 2
+  amountToSpawn: 1
 --- !u!50 &2167129632810340568
 Rigidbody2D:
   serializedVersion: 4
@@ -132,7 +132,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 3.7, y: 0}

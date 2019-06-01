@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class pressurePad : MonoBehaviour
+public class pressurePad : SoundProducer
 {
+    private Rigidbody2D rb;
+    float forceY;
 
-    public AudioSource KeySound;
-    private Rigidbody2D body;
-    public float force;
-    
-
-
-    void Start()
+    private bool IsPressed
     {
-        KeySound = GetComponent<AudioSource>();
-        body = GetComponent<Rigidbody2D>();
-    }
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "MainPlayer")
+        get
         {
-            KeySound.Play();
-            body.AddForce(transform.up * force);            
+            Collider2D collider = Physics2D.OverlapCircle
+               (transform.position, 2.0f, LayerMask.GetMask("Agent"));
+
+            return (collider != null);
         }
     }
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
-    
+    private void FixedUpdate()
+    {
+        if (IsPressed) Debug.Log(IsPressed);
+    }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 2);
+        Gizmos.color = Color.yellow;
+    }
 }
-    
-

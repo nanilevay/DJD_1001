@@ -7,6 +7,7 @@ public class playerController : Agent
     [Header("Player")]
     [SerializeField] private float knockBackDuration;
     [SerializeField] private float jumpSpeed = 200.0f;
+    [SerializeField] private int   hitDamage;
     [SerializeField] Collider2D    groundCollider;
     [SerializeField] Collider2D    airCollider;
     [SerializeField] Collider2D    weapon;
@@ -154,7 +155,6 @@ public class playerController : Agent
         else
         {
             attackTimer -= Time.deltaTime;
-            weapon.enabled = false;
         }
 
         // Animator values
@@ -225,7 +225,33 @@ public class playerController : Agent
     }
     public void ActivateHit()
     {
-        weapon.enabled = true;
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.ClearLayerMask();
+        contactFilter.SetLayerMask(LayerMask.GetMask("Agent") | LayerMask.GetMask("Spawners"));
+
+        Collider2D[] results = new Collider2D[2];
+        Collider2D collider;
+
+        int nCollisions = Physics2D.OverlapCollider(weapon, contactFilter, results);
+        if (nCollisions > 0)
+        {
+            for (int i = 0; i < nCollisions; i++)
+            {
+                collider = results[i];
+
+                Spawner spawner = collider.GetComponent<Spawner>();
+                Agent agent = collider.GetComponent<Agent>();
+                if ((agent) && (agent.faction != faction))
+                {
+                    Vector3 hitDir = (agent.transform.position - transform.position).normalized;
+                    agent.TakeHit(hitDamage, hitDir);
+                }
+                if (spawner)
+                {
+                    spawner.Spawn();
+                }
+            }
+        }
     }
 
     private void OnDrawGizmos()

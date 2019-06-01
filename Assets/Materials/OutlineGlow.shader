@@ -44,9 +44,10 @@
                     fixed4 col = tex2D(_MainTex, f.tex);
 					half4 outlineC = _Color;
 					col *= col.a;
-                    col *= _Glow;
+                    // col *= _Glow;
 					outlineC.a *= ceil(col.a);
 					outlineC.rgb *= outlineC.a;
+					outlineC *= _Glow;
 
 					fixed upAlpha = tex2D(_MainTex, f.tex + fixed2(0, _MainTex_TexelSize.y)).a;
 					fixed downAlpha	= tex2D(_MainTex, f.tex - fixed2(0, _MainTex_TexelSize.y)).a;
