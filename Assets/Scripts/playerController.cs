@@ -6,8 +6,10 @@ public class playerController : Agent
 {
     [Header("Player")]
     [SerializeField] private float knockBackDuration;
+    [SerializeField] float         wallDragForce;
     [SerializeField] private float jumpSpeed = 200.0f;
     [SerializeField] private int   hitDamage;
+    [Space]
     [SerializeField] Collider2D    groundCollider;
     [SerializeField] Collider2D    airCollider;
     [SerializeField] Collider2D    weapon;
@@ -15,11 +17,11 @@ public class playerController : Agent
     [SerializeField] Transform     mantleCheckPos;
     public ParticleSystem          walkingDust;
 
-    Animator animator;
+    Animator             animator;
     private float        hAxis;
     private bool         jumpPressed;
+    private bool         doubleJump;
     private bool         attackPressed;
-    private int          jumpCount;
     private float        knockBackTimer;
     private float        attackTimer;
     private float        attackDuration = 0.25f;
@@ -38,7 +40,7 @@ public class playerController : Agent
         get
         {
             Collider2D collider = Physics2D.OverlapCircle
-                (transform.position, 2.0f, LayerMask.GetMask("Ground"));
+                (transform.position, 2.5f, LayerMask.GetMask("Ground"));
 
             return (collider != null);
         }
@@ -89,33 +91,31 @@ public class playerController : Agent
 
             if (jumpPressed)
             {
-                if (IsOnGround)
-                {
-                    currentVelocity.y = jumpSpeed;
-                    jumpCount = 1;
-                }
-                else if (currentVelocity.y <= 0 && jumpCount >= 1)
-                {
-                    currentVelocity.y = jumpSpeed;
-                    jumpCount = 0;
-                }
+                jumpPressed = false;
+                currentVelocity.y = jumpSpeed;
             }
+            else if (jumpPressed && IsOnWall)
+                rb.drag = 0;
 
             // If the player is in contact with a wall
             if (IsOnWall)
             {
+                if (!IsOnGround)
+                {
+                    rb.drag = wallDragForce;
+                    doubleJump = false;
+                }
                 // Check for ledges
                 if (CanMantle && Mathf.Abs(hAxis) > 0.1)
                 {
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
-                    rb.gravityScale = 0;
                     animator.SetBool("CanClimb", CanMantle);
                 }
-                else
-                {
-                    // Wall Grab
-                }
+            }
+            else
+            {
+                rb.drag = 0;
             }
 
             rb.velocity = currentVelocity;
@@ -134,9 +134,20 @@ public class playerController : Agent
     {
         if (currentHP < 0) return;
 
-        jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
         attackPressed = Input.GetButtonDown("Fire1");
+
+        if (IsOnGround) doubleJump = false;
+
+        if (IsOnGround && Input.GetButtonDown("Jump"))
+        {
+            jumpPressed = true;
+        }
+        else if (Input.GetButtonDown("Jump") && !doubleJump)
+        {
+            jumpPressed = true;
+            doubleJump = true;
+        }
 
         if ((hAxis < 0.0f) && (transform.right.x > 0.0f))
         {
@@ -270,6 +281,4 @@ public class playerController : Agent
     {
         LvlManager.instance.LoseLife();
     }
-
-  
 }

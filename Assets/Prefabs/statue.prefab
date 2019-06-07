@@ -98,9 +98,8 @@ MonoBehaviour:
   maxDistanceToSpawn: 350
   enemyPrefab: {fileID: 5358410260090566125, guid: 744ed8ac38c0e5c4ea6fb0b97b9af74d,
     type: 3}
-  soundWaveFx: {fileID: 1084370839311085512, guid: 69252b4d384a111468edcfd9826da812,
-    type: 3}
   amountToSpawn: 1
+  ripple: {fileID: 0}
 --- !u!50 &2167129632810340568
 Rigidbody2D:
   serializedVersion: 4

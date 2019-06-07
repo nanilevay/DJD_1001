@@ -108,6 +108,7 @@ MonoBehaviour:
   invulnDuration: 0.75
   faction: 0
   knockBackDuration: 0.2
+  wallDragForce: 300
   jumpSpeed: 250
   hitDamage: 1
   groundCollider: {fileID: 2397104787208072903}
@@ -226,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2397104787254074299}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.7, y: 45.1, z: 0}
+  m_LocalPosition: {x: 8.6, y: 43.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2397104787208072900}
@@ -4954,7 +4955,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2397104787310188234}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5, y: 9.7, z: 0}
+  m_LocalPosition: {x: 6.26, y: 9.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2397104787208072900}
@@ -5092,17 +5093,17 @@ PrefabInstance:
     - target: {fileID: 6373422862657077583, guid: 581eb808f160a3247a5a014ef7f716ed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6373422862657077583, guid: 581eb808f160a3247a5a014ef7f716ed,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6373422862657077583, guid: 581eb808f160a3247a5a014ef7f716ed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6373422862657077583, guid: 581eb808f160a3247a5a014ef7f716ed,
         type: 3}

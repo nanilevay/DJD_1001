@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2842469994331748267}
-  - component: {fileID: 2842469994331748266}
+  - component: {fileID: 939523462228162657}
   - component: {fileID: 2842469994331748269}
   - component: {fileID: 2842469994331748271}
   - component: {fileID: 2842469994331748270}
@@ -29,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2842469994331748241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -87.49, y: -64.8, z: 0}
-  m_LocalScale: {x: 1, y: 0.957015, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.9125, y: 0.957015, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2842469994331748266
+--- !u!114 &939523462228162657
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,17 +44,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2842469994331748241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2635a27aa0c96a47b1d4428153a8d3b, type: 3}
+  m_Script: {fileID: 11500000, guid: ced160093040cc641b81fe832244a6c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistanceToSpawn: 50
-  maxDistanceToSpawn: 150
+  minDistanceToSpawn: 25
+  maxDistanceToSpawn: 115
   enemyPrefab: {fileID: 5358410260090566125, guid: 744ed8ac38c0e5c4ea6fb0b97b9af74d,
     type: 3}
   amountToSpawn: 1
-  soundWaveFx: {fileID: 1084370839311085512, guid: 69252b4d384a111468edcfd9826da812,
-    type: 3}
-  activationSound: {fileID: 2842469994331748270}
+  minForceToPress: 288
+  minSpeed: 20
+  maxSpeed: 500
+  maxOffset: 9
 --- !u!61 &2842469994331748269
 BoxCollider2D:
   m_ObjectHideFlags: 0
