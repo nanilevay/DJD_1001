@@ -18,7 +18,7 @@ public class Agent : MonoBehaviour
 
     protected Rigidbody2D    rb;
     protected SpriteRenderer sprite;
-    protected int            currentHP;
+    public int            currentHP;
     protected float          invulnTimer;
 
     protected bool IsInvulnerable
