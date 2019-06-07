@@ -6,10 +6,10 @@ public class SoundProducer : Spawner
 {
     [Header("Alarm")]
     [SerializeField] ParticleSystem soundWaveFx;
-    [SerializeField] private int    amountToSpawn;
-
+    [SerializeField] AudioSource    activationSound;
     private void Awake()
     {
+        activationSound = GetComponent<AudioSource>();
         soundWaveFx.Stop();
     }
 
@@ -18,6 +18,7 @@ public class SoundProducer : Spawner
         for (int i = 0; i < amountToSpawn; i++)
             base.Spawn();
 
-        soundWaveFx.Play();
+        if (soundWaveFx) soundWaveFx.Play();
+        if (activationSound) activationSound.Play();
     }
 }

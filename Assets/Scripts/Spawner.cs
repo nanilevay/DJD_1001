@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] protected float      minDistanceToSpawn;
     [SerializeField] protected float      maxDistanceToSpawn;
     [SerializeField] private GameObject   enemyPrefab;
-
+    [SerializeField] protected int        amountToSpawn;
     public virtual void Spawn()
     {
         Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity);

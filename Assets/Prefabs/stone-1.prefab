@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInstantKill: 0
-  damageOnTouch: 2
+  damageOnTouch: 1
   isTurnedOn: 1
 --- !u!61 &7094083463494932315
 BoxCollider2D:

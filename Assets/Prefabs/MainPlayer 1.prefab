@@ -109,6 +109,7 @@ MonoBehaviour:
   faction: 0
   knockBackDuration: 0.2
   jumpSpeed: 250
+  hitDamage: 1
   groundCollider: {fileID: 2397104787208072903}
   airCollider: {fileID: 2397104787208072921}
   weapon: {fileID: 2397104789162731091}
@@ -5029,7 +5030,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2397104789162731100}
   - component: {fileID: 2397104789162731091}
-  - component: {fileID: 2397104789162731090}
   m_Layer: 10
   m_Name: WeaponHit
   m_TagString: Untagged
@@ -5058,7 +5058,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2397104789162731101}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -5075,21 +5075,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 17.268745, y: 6.674019}
+  m_Size: {x: 16.12, y: 6.674019}
   m_EdgeRadius: 0
---- !u!114 &2397104789162731090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2397104789162731101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57bc61fef156ec9418ed7376155434e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitDamage: 1
 --- !u!1001 &2397104788765564686
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -28,7 +28,6 @@ public class GmManager : MonoBehaviour
     public void LoseLife()
     {
         currentLives--;
-
     }
 
     void Start()
