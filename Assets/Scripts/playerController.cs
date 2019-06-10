@@ -17,6 +17,10 @@ public class playerController : Agent
     [SerializeField] Transform     mantleCheckPos;
     public ParticleSystem          walkingDust;
 
+    [Header("Player Animator Variables")]
+    [SerializeField] private float landingDistance;
+    [SerializeField] private float minVelocityToLand;
+
     Animator             animator;
     private float        hAxis;
     private bool         jumpPressed;
@@ -46,7 +50,7 @@ public class playerController : Agent
         }
     }
 
-        // Is the player on a wall
+    // Is the player on a wall
     private bool IsOnWall
     {
         get
@@ -57,18 +61,35 @@ public class playerController : Agent
         }
     }
 
-        // Is the player Capable of Mantling
+    // Is the player Capable of Mantling
     private bool CanMantle
     {
         get
         {
-            mantleHit = Physics2D.Raycast(mantleCheckPos.position, 
+            mantleHit = Physics2D.Raycast(mantleCheckPos.position,
                 transform.up * -1, 35, LayerMask.GetMask("Ground"));
 
             if (Mathf.Abs(mantleHit.point.y - mantleCheckPos.position.y) > 21)
                 return mantleHit;
             else
                 return false;
+        }
+    }
+
+    private bool LandDistance
+    {
+        get
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,
+                transform.up * -1, 60, LayerMask.GetMask("Ground"));
+            float distance = Mathf.Abs(hit.point.y - transform.position.y);
+
+            if (rb.velocity.y < -minVelocityToLand)
+            {
+                Debug.Log(rb.velocity.y);
+                return (distance < landingDistance);
+            }
+            else return false;
         }
     }
 
@@ -84,6 +105,7 @@ public class playerController : Agent
     {
         if (knockBackTimer <= 0.0f)
         {
+
             rb.gravityScale = 1;
             Vector2 currentVelocity = rb.velocity;
 
@@ -98,7 +120,7 @@ public class playerController : Agent
                 rb.drag = 0;
 
             // If the player is in contact with a wall
-            if (IsOnWall)
+            if (IsOnWall && Mathf.Abs(hAxis) > 0.1)
             {
                 if (!IsOnGround)
                 {
@@ -106,7 +128,7 @@ public class playerController : Agent
                     doubleJump = false;
                 }
                 // Check for ledges
-                if (CanMantle && Mathf.Abs(hAxis) > 0.1)
+                if (CanMantle)
                 {
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
@@ -125,7 +147,8 @@ public class playerController : Agent
             rb.gravityScale = 2.0f;
         }
 
-        // Colisions
+        animator.SetBool("Land", LandDistance);
+        // Collisions
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
     }
@@ -172,7 +195,6 @@ public class playerController : Agent
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("VelocityY", rb.velocity.y);
         animator.SetBool("IsOnGround", IsOnGround);
-        
 
         base.Update();
 

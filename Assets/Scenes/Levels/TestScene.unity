@@ -677,14 +677,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  offset: {x: 0, y: 50, z: 0}
+  offset: {x: 0, y: 0, z: 0}
   enforceBounds: 1
   bounds:
     serializedVersion: 2
-    x: -499
-    y: -106.4
-    width: 1462
-    height: 333.04
+    x: 0
+    y: 0
+    width: 0
+    height: 0
   cameraSpeed: 0.05
 --- !u!20 &519420031
 Camera:
@@ -5375,15 +5375,6 @@ Tilemap:
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
       m_ColliderType: 1
-  - first: {x: -7, y: -4, z: 0}
-    second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 1
-      m_ColliderType: 1
   - first: {x: 3, y: -4, z: 0}
     second:
       m_TileIndex: 10
@@ -7294,7 +7285,7 @@ Tilemap:
       m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 10
+  - m_RefCount: 9
     m_Data: {fileID: 11400000, guid: f9653983f1a01c048b547052352d1644, type: 2}
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: e5fff2d237875894ea274dd88ee690ac, type: 2}
@@ -7319,7 +7310,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: d5be4ba160708924b96ed08e8057105a, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 10
+  - m_RefCount: 9
     m_Data: {fileID: 21300142, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: 21300116, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
@@ -7344,7 +7335,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 21300144, guid: 297a514ba6a7c44e6a1eac9511e640e5, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 532
+  - m_RefCount: 531
     m_Data:
       e00: 1
       e01: 0
@@ -7363,7 +7354,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 532
+  - m_RefCount: 531
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7546,14 +7537,6 @@ CompositeCollider2D:
         Y: -530000000
       - X: 479700000
         Y: -640000000
-      - X: -959300032
-        Y: -640000000
-      - X: -959300032
-        Y: -480000000
-      - X: -1119299968
-        Y: -480000000
-      - X: -1119299968
-        Y: -640000000
       - X: -1598899968
         Y: -640000000
       - X: -1598899968
@@ -7657,10 +7640,6 @@ CompositeCollider2D:
       - {x: 49.97, y: -51}
       - {x: 47.97, y: -53}
       - {x: 47.97, y: -64}
-      - {x: -95.93001, y: -64}
-      - {x: -95.93001, y: -48}
-      - {x: -111.93, y: -48}
-      - {x: -111.93, y: -64}
       - {x: -159.89, y: -64}
       - {x: -159.89, y: -52}
       - {x: -162.89, y: -48}

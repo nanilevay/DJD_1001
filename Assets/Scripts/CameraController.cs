@@ -20,16 +20,16 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float sizeY = camera.orthographicSize;
+        float sizeX = sizeY * camera.aspect;
+
         Vector3 newPos = target.position + offset;
         Vector3 delta = newPos - transform.position;
 
         newPos = transform.position + delta * cameraSpeed;
 
         if (enforceBounds)
-        {
-            float sizeY = camera.orthographicSize;
-            float sizeX = sizeY * camera.aspect;
-
+        {            
             newPos.x = Mathf.Clamp
                 (newPos.x, bounds.xMin + sizeX, bounds.xMax - sizeX);
             newPos.y = Mathf.Clamp
