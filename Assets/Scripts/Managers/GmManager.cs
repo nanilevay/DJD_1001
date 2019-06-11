@@ -44,6 +44,4 @@ public class GmManager : MonoBehaviour
     {
         currentLives = livesNum;
     }
-
-
 }

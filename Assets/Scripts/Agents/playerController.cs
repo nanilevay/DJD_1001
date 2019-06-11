@@ -98,6 +98,9 @@ public class playerController : Agent
     {
         base.Start();
         animator = GetComponent<Animator>();
+
+        LvlManager.instance.SetPlayerMaxHP(maxHP);
+        LvlManager.instance.SetPlayerCurrentHP(currentHP);
     }
 
     // Update is called once per frame
@@ -212,8 +215,10 @@ public class playerController : Agent
     {
         if (IsInvulnerable) return;
 
-        currentHP -= nDamage;
+        EZCameraShake.CameraShaker.Instance.ShakeOnce(2.0f, 2.0f, 0.05f, 0.2f);
 
+        currentHP -= nDamage;
+        LvlManager.instance.SetPlayerCurrentHP(currentHP);
         if (currentHP < 0)
         {
             OnDie();
