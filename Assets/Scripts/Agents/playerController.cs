@@ -6,8 +6,10 @@ public class playerController : Agent
 {
     [Header("Player")]
     [SerializeField] private float knockBackDuration;
+    [SerializeField] float         wallDragForce;
     [SerializeField] private float jumpSpeed = 200.0f;
     [SerializeField] private int   hitDamage;
+    [Space]
     [SerializeField] Collider2D    groundCollider;
     [SerializeField] Collider2D    airCollider;
     [SerializeField] Collider2D    weapon;
@@ -15,11 +17,15 @@ public class playerController : Agent
     [SerializeField] Transform     mantleCheckPos;
     public ParticleSystem          walkingDust;
 
-    Animator animator;
+    [Header("Player Animator Variables")]
+    [SerializeField] private float landingDistance;
+    [SerializeField] private float minVelocityToLand;
+
+    Animator             animator;
     private float        hAxis;
     private bool         jumpPressed;
+    private bool         doubleJump;
     private bool         attackPressed;
-    private int          jumpCount;
     private float        knockBackTimer;
     private float        attackTimer;
     private float        attackDuration = 0.25f;
@@ -38,13 +44,13 @@ public class playerController : Agent
         get
         {
             Collider2D collider = Physics2D.OverlapCircle
-                (transform.position, 2.0f, LayerMask.GetMask("Ground"));
+                (transform.position, 2.5f, LayerMask.GetMask("Ground"));
 
             return (collider != null);
         }
     }
 
-        // Is the player on a wall
+    // Is the player on a wall
     private bool IsOnWall
     {
         get
@@ -55,12 +61,12 @@ public class playerController : Agent
         }
     }
 
-        // Is the player Capable of Mantling
+    // Is the player Capable of Mantling
     private bool CanMantle
     {
         get
         {
-            mantleHit = Physics2D.Raycast(mantleCheckPos.position, 
+            mantleHit = Physics2D.Raycast(mantleCheckPos.position,
                 transform.up * -1, 35, LayerMask.GetMask("Ground"));
 
             if (Mathf.Abs(mantleHit.point.y - mantleCheckPos.position.y) > 21)
@@ -70,11 +76,31 @@ public class playerController : Agent
         }
     }
 
+    private bool LandDistance
+    {
+        get
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,
+                transform.up * -1, 60, LayerMask.GetMask("Ground"));
+            float distance = Mathf.Abs(hit.point.y - transform.position.y);
+
+            if (rb.velocity.y < -minVelocityToLand)
+            {
+                Debug.Log(rb.velocity.y);
+                return (distance < landingDistance);
+            }
+            else return false;
+        }
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         animator = GetComponent<Animator>();
+
+        LvlManager.instance.SetPlayerMaxHP(maxHP);
+        LvlManager.instance.SetPlayerCurrentHP(currentHP);
     }
 
     // Update is called once per frame
@@ -82,6 +108,7 @@ public class playerController : Agent
     {
         if (knockBackTimer <= 0.0f)
         {
+
             rb.gravityScale = 1;
             Vector2 currentVelocity = rb.velocity;
 
@@ -89,33 +116,31 @@ public class playerController : Agent
 
             if (jumpPressed)
             {
-                if (IsOnGround)
-                {
-                    currentVelocity.y = jumpSpeed;
-                    jumpCount = 1;
-                }
-                else if (currentVelocity.y <= 0 && jumpCount >= 1)
-                {
-                    currentVelocity.y = jumpSpeed;
-                    jumpCount = 0;
-                }
+                jumpPressed = false;
+                currentVelocity.y = jumpSpeed;
             }
+            else if (jumpPressed && IsOnWall)
+                rb.drag = 0;
 
             // If the player is in contact with a wall
-            if (IsOnWall)
+            if (IsOnWall && Mathf.Abs(hAxis) > 0.1)
             {
+                if (!IsOnGround)
+                {
+                    rb.drag = wallDragForce;
+                    doubleJump = false;
+                }
                 // Check for ledges
-                if (CanMantle && Mathf.Abs(hAxis) > 0.1)
+                if (CanMantle)
                 {
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = 0;
-                    rb.gravityScale = 0;
                     animator.SetBool("CanClimb", CanMantle);
                 }
-                else
-                {
-                    // Wall Grab
-                }
+            }
+            else
+            {
+                rb.drag = 0;
             }
 
             rb.velocity = currentVelocity;
@@ -125,7 +150,8 @@ public class playerController : Agent
             rb.gravityScale = 2.0f;
         }
 
-        // Colisions
+        animator.SetBool("Land", LandDistance);
+        // Collisions
         groundCollider.enabled = IsOnGround;
         airCollider.enabled = !IsOnGround;
     }
@@ -134,9 +160,20 @@ public class playerController : Agent
     {
         if (currentHP < 0) return;
 
-        jumpPressed = Input.GetButton("Jump");
         hAxis = Input.GetAxis("Horizontal");
         attackPressed = Input.GetButtonDown("Fire1");
+
+        if (IsOnGround) doubleJump = false;
+
+        if (IsOnGround && Input.GetButtonDown("Jump"))
+        {
+            jumpPressed = true;
+        }
+        else if (Input.GetButtonDown("Jump") && !doubleJump)
+        {
+            jumpPressed = true;
+            doubleJump = true;
+        }
 
         if ((hAxis < 0.0f) && (transform.right.x > 0.0f))
         {
@@ -161,7 +198,6 @@ public class playerController : Agent
         animator.SetFloat("AbsVelocityX", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("VelocityY", rb.velocity.y);
         animator.SetBool("IsOnGround", IsOnGround);
-        
 
         base.Update();
 
@@ -179,8 +215,10 @@ public class playerController : Agent
     {
         if (IsInvulnerable) return;
 
-        currentHP -= nDamage;
+        EZCameraShake.CameraShaker.Instance.ShakeOnce(2.0f, 2.0f, 0.05f, 0.2f);
 
+        currentHP -= nDamage;
+        LvlManager.instance.SetPlayerCurrentHP(currentHP);
         if (currentHP < 0)
         {
             OnDie();
@@ -270,6 +308,4 @@ public class playerController : Agent
     {
         LvlManager.instance.LoseLife();
     }
-
-  
 }

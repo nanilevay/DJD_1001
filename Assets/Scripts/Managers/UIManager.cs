@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private Image lifeBarImage;
+
     GameObject[] pause;
 
     public static UIManager instance;
-
-    [SerializeField] Image[] livesImg;
 
     // checking if player presses "p" key
     private bool pausePressed;
@@ -34,22 +34,8 @@ public class UIManager : MonoBehaviour
 
         pause = GameObject.FindGameObjectsWithTag("PauseMenu");
 
-    
         HidePaused();
     }
-
-    /*
-    public void UpdateLivesDisplay()
-    {
-        for(int i = 0; i < livesImg.Length; i++)
-        {
-            if (i < GmManager.instance.GetCurrentLives())
-                livesImg[i].enabled = true;
-            else
-                livesImg[i].enabled = false;
-        }
-    }
-    */
 
     private void FixedUpdate()
     {
@@ -60,6 +46,16 @@ public class UIManager : MonoBehaviour
         {   
             pauseMenuToggler();
         }
+    }
+
+    private void Update()
+    {
+        UpdateLiveDisplay();
+    }
+
+    private void UpdateLiveDisplay()
+    {
+        lifeBarImage.fillAmount = LvlManager.instance.GetCurrentLifePercentage();
     }
 
     // checking if the game is currently paused or not in order to toggle on / off
@@ -86,7 +82,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowPaused()
     {
-        // need to optimise this
+        // need to optimize this
         foreach (GameObject g in pause)
         {
             g.SetActive(true);

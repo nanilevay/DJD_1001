@@ -35,13 +35,6 @@ public class GmManager : MonoBehaviour
         ResetGame();
     }
 
-    /*
-    public void LoseLife()
-    {
-        currentLives--;
-    }
-    */
-
     public int GetCurrentLives()
     {
         return currentLives;
@@ -51,6 +44,4 @@ public class GmManager : MonoBehaviour
     {
         currentLives = livesNum;
     }
-
-
 }

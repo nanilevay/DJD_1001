@@ -9,10 +9,12 @@ public class LvlManager : MonoBehaviour
     [SerializeField] Transform        spawnPoint;
     [SerializeField] CameraController cameraCtrl;
 
-    GameObject playerChar;
+    private int        playerCurrentHP;
+    private int        playerMaxHP;
+    private GameObject playerChar;
 
     public static LvlManager instance;
-
+   
     private void Awake()
     {
         if(instance != null)
@@ -53,5 +55,19 @@ public class LvlManager : MonoBehaviour
         {
             Respawn();
         }
+    }
+
+    public void SetPlayerMaxHP(int hp)
+    {
+        playerMaxHP = hp;
+    }
+    public void SetPlayerCurrentHP(int hp)
+    {
+        playerCurrentHP = hp;
+    }
+
+    public float GetCurrentLifePercentage()
+    {
+        return 1 - playerCurrentHP / playerMaxHP;
     }
 }
